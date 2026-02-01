@@ -1,53 +1,64 @@
+# **Global Food Price Analysis 2025 (Professional Simulation)**
+Our Team:
+<img width="1238" height="692" alt="image" src="https://github.com/user-attachments/assets/e1bcdef2-35db-458a-bd29-b873b983f6df" />
+
 Our Presentation: https://www.canva.com/design/DAG96YnXhx0/kbcujlqnlnHz0QogCEQ6KA/edit
 
 Dashboard: https://public.tableau.com/views/CODA_RMT12_finalproj/Story1?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link
 
-## Analisis Harga Pangan Global 2025
-_Final Project CODA RMT-012_
+## **Project Overview**
+This repository represents a **refined version** of my Capstone Project. While the initial iteration focused on direct analysis of flat datasets, this version simulates a **real-world enterprise workflow** where Data Analysts interact with a structured Data Warehouse prepared by Data Engineers.
 
-## Background
-Dataset WFP Food Prices Global 2025 menyediakan data harga komoditas yang bersifat granular, mencakup informasi waktu, lokasi pasar, jenis komoditas, harga lokal, harga dalam USD, serta indikator ekonomi seperti GDP per kapita. Data ini memungkinkan analisis terhadap tren harga, perbandingan harga antar wilayah, serta keterkaitan antara kondisi ekonomi dan harga komoditas.
+Here, we simulate the transition from raw data to a **Star Schema** architecture, demonstrating my ability to work with relational data models and perform SQL-based analytics instead of simple flat-file filtering.
 
-## Problem Statement
-Bagaimana cara memahami dan menganalisis dinamika harga komoditas global pada tahun 2025 dengan mengidentifikasi tren harga, perbedaan harga antar pasar dan negara, serta hubungan antara harga komoditas dan kondisi ekonomi, sehingga dapat mendukung pengambilan keputusan operasional yang lebih efisien (seperti restok komoditas) dan memberikan insight berbasis data terkait ketimpangan harga dan daya beli masyarakat?
+## **Problem Statement**
+How can we analyze global food price dynamics in 2025 to identify price trends, market disparities, and economic correlations? The goal is to support operational decision-making (e.g., restocking strategies) and provide data-driven insights into purchasing power parity across different economic contexts.
 
-## Exploratory Data Harga Pangan Global (WFP 2025)
-Menggabungkan Data Harga Pangan dengan GDP per Kapita | WFP Data - Master Data - GDP Data
-a. Mapping Negara
-Menambahkan kolom Country yang berisi nama negara dengan mengacu pada kolom CountryISO3.
-b. Sumber Data Tambahan
-Mengimpor data GDP per kapita untuk memberikan konteks ekonomi pada analisis harga.
-c. Data Cleaning
-Mengubah beberapa tipe data menjadi numerik, dan menangani perbedaan penulisan nama negara antar dataset.
+---
 
-## Skalabilitas & Efisiensi
-Strategi kami berfokus pada Arsitektur Modern yang Hemat Biaya. Dengan menggunakan tools, tidak hanya mendapatkan performa tinggi, tapi juga efisiensi operasional
-a. Memproses data lebih cepat (PySpark).
-b. Mengurangi biaya infrastruktur (Neon DB).
-c. Mempercepat waktu pengembangan dan deployment (Docker).
+## **The "Professional" Workflow**
+Unlike typical beginner projects that load a single CSV, this project follows a strict **Data Modeling** approach:
 
-## ETL Process
-A. Tahap Extract (Ekstraksi Data) | Mengambil data mentah dari sumber luar
-1. Sumber Data
-World Food Programme (WFP) Humanitarian Data Portal.
-2. Format
-Dataset dalam bentuk CSV.
-3. Metode
-Pengambilan data dilakukan secara otomatis menggunakan protokol HTTP GET (API call atau direct download).
+### **1. Data Modeling (Star Schema)**
+Instead of analyzing a monolithic dataset, we restructured the data into a **Fact Table** and **Dimension Tables** to optimize query performance and data integrity.
 
-B. Tahap Transform (Transformasi Data) | Pemrosesan data menggunakan framework PySpark untuk mengubah data mentah menjadi format yang siap dianalisis
-1. Cleaning
-   Melakukan pembersihan data, salah satu langkah krusialnya adalah menghapus HXL Metadata (tag khusus data kemanusiaan) agar tidak mengganggu proses kalkulasi.
-2. Pemodelan Data (Star Schema)
-   Data dipecah menjadi struktur tabel pendukung analisis:
-   a. Fact Table: fact_food_price (berisi data transaksi/harga pangan).
-   b. Dimension Tables: Data dikelompokkan ke dalam kategori Dim Commodity (komoditas), Dim Country (negara), Dim Market (pasar), dan Dim Date (waktu).
-3. Penyimpanan Sementara
-   Hasil transformasi disimpan dalam format Parquet (file kolom yang efisien) ke dalam direktori lokal atau cloud storage sebagai staging area.
+* **Fact Table**: `fact_food_price`
+    * Contains transactional metrics: `price`, `usdprice`, and foreign keys to dimensions.
+* **Dimension Tables**:
+    * `dim_commodity`: Classification of items (`commodity_name`, `category`, `unit`).
+    * `dim_country`: Country metadata including **GDP per Capita** (`country_name`, `iso3`, `gdp`).
+    * `dim_market`: Geospatial data (`market_name`, `latitude`, `longitude`, `admin1`).
 
-C. Tahap Load (Pemuatan Data) | Memindahkan data yang sudah bersih ke penyimpanan permanen
-1. Teknologi
-   Menggunakan Spark JDBC sebagai jembatan pengiriman data.
-2. Target
-   Data dimuat ke dalam Neon PostgreSQL Data Warehouse. Di sini, data sudah siap digunakan oleh tim analis atau aplikasi visualisasi data (seperti Tableau atau Power BI).
+### **2. Simulated ETL Process**
+* **Extract**: Ingested raw data from WFP (Food Prices) and World Bank (GDP).
+* **Transform**: Used Python to split the "flat" raw data into relational tables, simulating the job of a Data Engineer.
+* **Load**: Loaded these tables into a SQL-compatible environment for analysis.
+
+---
+
+## **Key Analytical Insights**
+Using **SQL Joins** and statistical correlation, I derived the following insights:
+
+1.  **Economic Correlation**: Found that a country's income level (GDP) is **not the primary driver** of food prices. Supply chain dynamics and market structure play a much larger role (Insight KQ7).
+2.  **Currency Impact**: Countries with significant currency devaluation experienced local price spikes that decoupled from global USD trends (Insight KQ5).
+3.  **Market Disparities**: Identified consistent "High-Cost" vs "Low-Cost" countries across specific commodities, providing a watchlist for potential supply shocks (Insight KQ4).
+
+---
+
+## **Technology Stack**
+* **Language**: Python 
+* **Data Modeling**: Star Schema Design (Fact/Dims).
+* **Querying**: SQL (Simulated via Pandas/DuckDB).
+* **Visualization**: Matplotlib, Seaborn, Tableau.
+
+---
+
+## **Repository Structure**
+* `etl_simulation.ipynb`: The process of converting raw CSVs into Fact/Dimension tables.
+* `analytical_queries.ipynb`: Performing analysis using SQL logic (Joins & Aggregations) on the structured data.
+* `data/`: Contains the raw WFP data and the processed Dimension/Fact tables.
+
+---
+
+*“This project demonstrates my readiness to collaborate in a cross-functional data team, understanding not just how to analyze data, but how it should be structured for scalability.”*
 
