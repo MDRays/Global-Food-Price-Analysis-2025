@@ -1,3 +1,4 @@
+Our Presentation: https://www.canva.com/design/DAG96YnXhx0/kbcujlqnlnHz0QogCEQ6KA/edit
 Dashboard: https://public.tableau.com/views/CODA_RMT12_finalproj/Story1?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link
 
 ## Analisis Harga Pangan Global 2025
