@@ -11,53 +11,59 @@ This repository represents a **refined version** of my Capstone Project. While t
 
 Here, we simulate the transition from raw data to a **Star Schema** architecture, demonstrating my ability to work with relational data models and perform SQL-based analytics instead of simple flat-file filtering.
 
+## **Background**
+In 2025, global food markets faced significant volatility due to shifting economic landscapes. This project analyzes the granular price data of essential commodities (Sugar, Salt, Potatoes, Onions, and Tomatoes) across 98 countries. By integrating World Food Programme (WFP) price data with World Bank GDP indicators, we aim to uncover the true correlation between a nation's wealth and its food security.
+
 ## **Problem Statement**
-How can we analyze global food price dynamics in 2025 to identify price trends, market disparities, and economic correlations? The goal is to support operational decision-making (e.g., restocking strategies) and provide data-driven insights into purchasing power parity across different economic contexts.
+How do global food price dynamics in 2025 impact different economic strata? Specifically:
+* Can we identify price trends and spikes across global markets?
+* Does a higher GDP per capita guarantee more stable or lower food prices?
+* How can data-driven insights optimize operational decisions, such as commodity restocking?.
 
 ---
 
-## **The "Professional" Workflow**
-Unlike typical beginner projects that load a single CSV, this project follows a strict **Data Modeling** approach:
+## **Data Architecture & ETL Pipeline**
+This project follows a professional Medallion Architecture approach to ensure data integrity:
 
-### **1. Data Modeling (Star Schema)**
-Instead of analyzing a monolithic dataset, we restructured the data into a **Fact Table** and **Dimension Tables** to optimize query performance and data integrity.
+### **1. Extract (Bronze Layer)**
+* Data sourced from the WFP Humanitarian Data Portal.
+* Multi-source integration: WFP Food Prices (CSV) + World Bank GDP (CSV).
 
-* **Fact Table**: `fact_food_price`
-    * Contains transactional metrics: `price`, `usdprice`, and foreign keys to dimensions.
-* **Dimension Tables**:
-    * `dim_commodity`: Classification of items (`commodity_name`, `category`, `unit`).
-    * `dim_country`: Country metadata including **GDP per Capita** (`country_name`, `iso3`, `gdp`).
-    * `dim_market`: Geospatial data (`market_name`, `latitude`, `longitude`, `admin1`).
+### **2. Transform (Silver Layer - Star Schema)**
+Using PySpark, we cleaned and modeled the data into a Star Schema for optimized querying:
+* **Fact Table**: fact_food_price (Transactions, local prices, USD prices).
+* **Dimension Tables**: dim_commodity, dim_country, dim_market, and dim_date.
+* **Cleaning**: Removal of HXL Metadata tags and standardization of units (KG, Butir, etc.).
 
-### **2. Simulated ETL Process**
-* **Extract**: Ingested raw data from WFP (Food Prices) and World Bank (GDP).
-* **Transform**: Used Python to split the "flat" raw data into relational tables, simulating the job of a Data Engineer.
-* **Load**: Loaded these tables into a SQL-compatible environment for analysis.
-
+### **3. Load (Gold Layer)**
+* Data is loaded into Neon PostgreSQL via Spark JDBC for final analysis and visualization.
 ---
 
 ## **Key Analytical Insights**
-Using **SQL Joins** and statistical correlation, I derived the following insights:
-
-1.  **Economic Correlation**: Found that a country's income level (GDP) is **not the primary driver** of food prices. Supply chain dynamics and market structure play a much larger role (Insight KQ7).
-2.  **Currency Impact**: Countries with significant currency devaluation experienced local price spikes that decoupled from global USD trends (Insight KQ5).
-3.  **Market Disparities**: Identified consistent "High-Cost" vs "Low-Cost" countries across specific commodities, providing a watchlist for potential supply shocks (Insight KQ4).
+Based on the 7 Key Questions (KQ) addressed in the analysis phase:
+* **1. Market Volatility** : Tomatoes and Onions exhibit the highest price variance, driven by seasonal local supply shifts.
+* **2. The GDP Paradox** : High GDP per capita does not strictly correlate with lower food prices; local supply chains and stability are more dominant factors.
+* **3. Currency Impact** : Countries facing local currency devaluation (detected via Price/USD ratio) suffer disproportionate food inflation.
+* **4. Economic Outliers** : Countries like Yemen and Somalia show extreme price spikes (outliers) tied to accessibility and conflict issues.
+* **5. Operational Efficiency** : Developed a logic to identify the cheapest markets per province to assist in cost-effective restocking strategies.
 
 ---
 
 ## **Technology Stack**
-* **Language**: Python 
-* **Data Modeling**: Star Schema Design (Fact/Dims).
-* **Querying**: SQL (Simulated via Pandas/DuckDB).
-* **Visualization**: Matplotlib, Seaborn, Tableau.
+* **Language**: Python (Pandas, Seaborn, Matplotlib). 
+* **Big Data Processing**: PySpark (ETL & Transformation).
+* **Database**: Neon PostgreSQL (Data Warehousing).
+* **Visualization**: Tableau.
+* **Environment**: Docker & Jupyter Notebook.
 
 ---
 
 ## **Repository Structure**
-* `etl_simulation.ipynb`: The process of converting raw CSVs into Fact/Dimension tables.
-* `analytical_queries.ipynb`: Performing analysis using SQL logic (Joins & Aggregations) on the structured data.
-* `data/`: Contains the raw WFP data and the processed Dimension/Fact tables.
-
+* final_project_eda.ipynb: Data cleaning, unit standardization, and GDP merging.
+* final_project_analysis.ipynb: Deep dive into the 7 Key Questions and economic correlations.
+* cleaned_wfp_2025.csv: The processed dataset used for visualization.
+* wfp_food_prices_global_2025.csv & GDP.csv: Raw data sources.
+* airflow-with-spark.rar: Data Architecture & ETL pipeline
 ---
 
 *“This project demonstrates my readiness to collaborate in a cross-functional data team, understanding not just how to analyze data, but how it should be structured for scalability.”*
