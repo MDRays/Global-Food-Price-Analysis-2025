@@ -1,5 +1,5 @@
-# **Global Food Price Analysis 2025 (Professional Simulation)**
-Our Team:
+# **Global Food Price Analysis 2025**
+
 <img width="1238" height="692" alt="image" src="https://github.com/user-attachments/assets/e1bcdef2-35db-458a-bd29-b873b983f6df" />
 
 Our Presentation: https://www.canva.com/design/DAG96YnXhx0/kbcujlqnlnHz0QogCEQ6KA/edit
